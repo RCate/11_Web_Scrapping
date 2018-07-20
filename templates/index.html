@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mars</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Mars</h1>
+            <p>
+                <a class="btn btn-primary btn-lg" href="/scrape" role="button">Get Mars Information!</a>
+            </p>
+
+        </div>
+
+        {% for mars_data in Mars%}
+        <div class="col-lg-12">
+            <div class="card" style="width: 20rem;">
+                <div class="card-body">
+                    <h4 class="card-title">Current Mars Weather</h4>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ Mars.weather}}</h6>
+                <br/>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">Current Mars News</h4>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ Mars.News_Title}}</h6>
+                    <p class="card-text">{{ Mars.News_Announcement}}</p>
+                <br/>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">Current Mars Image</h4>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ Mars.Mars_Current_Image}}</h6>
+                <br/>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">General Mars Information</h4>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ Mars.Mars_General_Information}}</h6>
+                <br/>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+</body>
+
+</html>
