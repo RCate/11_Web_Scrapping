@@ -2,13 +2,11 @@
 # Scraping
 
 
-
-# NASA Mars News
-
 # Dependencies
 from bs4 import BeautifulSoup
 import requests
 from splinter import Browser
+import time
 
 
 
@@ -18,6 +16,9 @@ def init_browser():
     executable_path = {"executable_path": "/usr/local/bin/chromedriver"}
     return Browser("chrome", **executable_path, headless=False)
 
+
+# NASA Mars News
+
 def scrape_News():
 
     browser = init_browser()
@@ -25,45 +26,44 @@ def scrape_News():
     url = 'https://mars.nasa.gov/news/?page=0&per_page=40&order=publish_date+desc%2Ccreated_at+desc&search=&category=19%2C165%2C184%2C204&blank_scope=Latest'
     browser.visit(url)
     html = browser.html
-
     Mars_soup = BeautifulSoup(html, 'html.parser')
 
 # Extract title text
     News_title = Mars_soup.find('div',class_="content_title").a.text
 # Extract the Paragraph info under the Title. 
-    News_paragraphs = Mars_soup.find('div',class_="article_teaser_body").text
+    # News_paragraphs = Mars_soup.find('div',class_="article_teaser_body").text
+    News_paragraphs = Mars_soup.find('div',class_="image_and_description_container").text
     news = {
         "News_title": News_title,
         "News_paragraphs": News_paragraphs
     }
     return news
 
+# Featured Image works in Jupiter Notebook - but not in this app because of Javascript changing the path... 
+#I completed the web-scrap, but just didn't get it to load into this file - nor into the HTLM portion
 
-# Mars Featured Image
-from splinter import Browser
-from bs4 import BeautifulSoup
+# def scrape_image():
+#     image_browser = init_browser()
 
-def init_browser2():
-    # @NOTE: Replace the path with your actual path to the chromedriver
-    executable_path = {"executable_path": "/usr/local/bin/chromedriver"}
-    return Browser("chrome", **executable_path, headless=False)
-def scrape_image():
-    image_browser = init_browser2()
+#     image_url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
+#     image_browser.visit(image_url)
+#     time.sleep(5)
 
-    image_url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
-    image_browser.visit(image_url)
+#     img = image_browser.find_by_id('full_image')
+#     img.click()
 
-    img = image_browser.find_by_id('full_image')
-    img.click()
+#     html_2 = image_browser.html
 
-    html_2 = image_browser.html
-    image_soup_2 = BeautifulSoup(html_2, 'html.parser')
-
-    featured_image_url = image_soup_2.select(".fancybox-image")[0]['src']
-    image = {
-        "featured_image_url": featured_image_url
-    }
-    return image
+#     image_soup_2 = BeautifulSoup(html_2, 'html.parser')
+#     with open("image_soup_2.html", "w") as fwrite:
+#         fwrite.write(html_2)
+#     featured_image_url = image_soup_2.select(".fancybox-image") #[0]['src']
+#     with open("featured_image_url.html", "w") as fwrite:
+#         fwrite.write(featured_image_url)
+#     image = {
+#         "featured_image_url": featured_image_url
+#     }
+#     return image
 
 # # Mars Weather
 
@@ -80,7 +80,7 @@ def scrape_weather():
     return weather
 
 
-# # Mars Facts
+#  Mars Facts
 
 import pandas as pd
 def scrape_table_info():
@@ -93,10 +93,10 @@ def scrape_table_info():
     Mars_df.rename(columns = {'0':'Mars Information', '1': 'Facts'}, inplace = True)
     Mars_df
 
-    Mars_HTML = Mars_df.to_html('Mars_Facts.html')
+    Mars_HTML = Mars_df.to_html(classes = "table table-striped")
     mars_tables = {
         "Table": Mars_HTML
     }
-    #get_ipython().system('open Mars_Facts.html')
     return mars_tables
+
 
